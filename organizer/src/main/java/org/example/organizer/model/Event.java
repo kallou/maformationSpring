@@ -10,6 +10,14 @@ public class Event {
 	
 	protected Event() {}
 	
+	public String toString(){
+		StringBuilder sb = new StringBuilder();
+		sb.append("description;").append(description!=null ? description : "<null>");
+		sb.append("beginDateTime;").append(beginDateTime!=null ? beginDateTime : "<null>");
+		sb.append("endDateTime;").append(endDateTime!=null ? endDateTime : "<null>");
+		return sb.toString();
+	}
+	
 	public Event(String description, LocalDateTime begin) {
 		this(description, begin, begin);
 	}

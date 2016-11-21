@@ -7,7 +7,7 @@ public class Main {
 	private static final String DEFAULT_NAME = "World";
 	
 	private static final String[] CONFIG_LOCATIONS = {
-			"classpath*:application-context.xml",
+			"classpath*:application-context.configuration.xml",
 	};
 
 	public static void main(String[] args) {
