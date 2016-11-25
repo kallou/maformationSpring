@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<script type="text/javascript" src="/webjars/jquery/3.1.1/jquery.js"/>
+</head>
+<body>
+ 	<script type="text/javascript">	
+ 	$(function(){
+ 		$.ajax({
+ 			  url: "/events"
+ 			}).done(function() {
+				alert("requete ajax terminé");
+ 				
+
+ 			});
+
+
+ 	});
+
+ 	</script>
+
+	<p id="coucou"></p>
+	je suis la page de depart
+</body>
+</html>

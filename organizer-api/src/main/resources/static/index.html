@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
+</head>
+<body>
+ 	<script type="text/javascript">	
+	function refresh(){
+		$.ajax(
+			{
+			  url: "/events"
+			}).
+			done(function(events) {
+				var table = $('#tableEvents');
+				table.empty();
+				
+				for (var i = 0; i < events.length; ++i) {
+					var event = events[i];
+					var tr = $('<tr>');
+					tr.append($('<td>').text(event.description));
+					tr.append($('<td>').text(event.beginDateTime));
+					tr.append($('<td>').text(event.endDateTime));
+					
+					var deletelink  = $('<button>').click(
+						function(){
+							var url = "/events/"+event.id;
+							$.ajax({
+								  url: "/events",
+								  method:"DELETE",	
+								  error: function(xhr,  textStatus, errorThrown){
+											alert('error delete:'+textStatus+', errorThrown:'+errorThrown);
+								  		 }
+								}).
+								done(function(events) {
+									refresh();
+								}				
+							
+						}		
+					).text('delete');
+					
+					table.append(tr);
+				}
+		    });
+	}
+	
+	function sendForm(){
+		var frm = $('#eventForm');
+		$.ajax({
+			  url: "/events",
+			  method:"POST",
+			  data : JSON.stringify(
+				{
+					description:$('#description').val(),	 
+					beginDateTime:$('#beginDateTime').val(),	
+					endDateTime:$('#endDateTime').val()
+				}
+			  ),
+			  processData:false,
+			  contentType:'application/json',	
+			  error: function(xhr,  textStatus, errorThrown){
+						alert('error envoi formulaire, textStatus:'+textStatus+', errorThrown:'+errorThrown);
+			  		 }
+			}).
+			done(function(events) {
+				refresh();
+			}			
+		);
+		return false;
+	}
+
+	
+	// sur onReady de la page affiche la liste des evenements.
+	// -------------------------------------------------------
+	$(function(){
+		refresh();
+ 	});
+ 	</script>
+
+	<div>
+		<!--  le formulaire -->
+		<div>
+			<form id="eventForm">
+				<table>
+					<tr>
+						<td>Description</td><td><input id="description"/></td>
+					</tr>
+					<tr>
+						<td>Begin</td><td><input id="beginDateTime"/></td>
+					</tr>
+					<tr>
+						<td>End</td><td><input id="endDateTime"/></td>
+					</tr>
+					<tr>
+						<td></td><td><button type="button" onclick="return sendForm();">Envoyer</button></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		
+		<!--  liste des events -->
+		<div>
+			<table id="tableEvents"></table>
+		</div>
+	</div>
+</body>
+</html>
