@@ -2,21 +2,22 @@ package org.example.organizer.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class Event {
+	@Id
+	@GeneratedValue
 	private Long id;
+	
 	private String description;
 	private LocalDateTime beginDateTime;
 	private LocalDateTime endDateTime;
 	
-	protected Event() {}
-	
-	public String toString(){
-		StringBuilder sb = new StringBuilder();
-		sb.append("description;").append(description!=null ? description : "<null>");
-		sb.append("beginDateTime;").append(beginDateTime!=null ? beginDateTime : "<null>");
-		sb.append("endDateTime;").append(endDateTime!=null ? endDateTime : "<null>");
-		return sb.toString();
-	}
+	public Event() {}
+
 	
 	public Event(String description, LocalDateTime begin) {
 		this(description, begin, begin);
@@ -40,7 +41,7 @@ public class Event {
 		return id;
 	}
 	
-	protected void setId(Long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -74,5 +75,14 @@ public class Event {
 		if (beginDateTime != null && endDateTime.isBefore(beginDateTime)) {
 			this.beginDateTime = endDateTime;
 		}
+	}
+	
+	
+	public String toString(){
+		StringBuilder sb = new StringBuilder();
+		sb.append("description;").append(description!=null ? description : "<null>");
+		sb.append("beginDateTime;").append(beginDateTime!=null ? beginDateTime : "<null>");
+		sb.append("endDateTime;").append(endDateTime!=null ? endDateTime : "<null>");
+		return sb.toString();
 	}
 }

@@ -2,7 +2,14 @@ package org.example.organizer.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class Task {
+	@Id
+	@GeneratedValue
 	private Long id;
 	private String description;
 	private Priority priority;

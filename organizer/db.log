@@ -1,0 +1,199 @@
+/*C241*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C232*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C233*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C234*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C235*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C236*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C237*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C238*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C239*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C240*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C251*/SET SCHEMA PUBLIC
+CREATE TABLE BATCH_JOB_INSTANCE ( JOB_INSTANCE_ID BIGINT IDENTITY NOT NULL PRIMARY KEY , VERSION BIGINT , JOB_NAME VARCHAR(100) NOT NULL, JOB_KEY VARCHAR(32) NOT NULL, constraint JOB_INST_UN unique (JOB_NAME, JOB_KEY) ) 
+CREATE TABLE BATCH_JOB_EXECUTION ( JOB_EXECUTION_ID BIGINT IDENTITY NOT NULL PRIMARY KEY , VERSION BIGINT , JOB_INSTANCE_ID BIGINT NOT NULL, CREATE_TIME TIMESTAMP NOT NULL, START_TIME TIMESTAMP DEFAULT NULL , END_TIME TIMESTAMP DEFAULT NULL , STATUS VARCHAR(10) , EXIT_CODE VARCHAR(2500) , EXIT_MESSAGE VARCHAR(2500) , LAST_UPDATED TIMESTAMP, JOB_CONFIGURATION_LOCATION VARCHAR(2500) NULL, constraint JOB_INST_EXEC_FK foreign key (JOB_INSTANCE_ID) references BATCH_JOB_INSTANCE(JOB_INSTANCE_ID) ) 
+CREATE TABLE BATCH_JOB_EXECUTION_PARAMS ( JOB_EXECUTION_ID BIGINT NOT NULL , TYPE_CD VARCHAR(6) NOT NULL , KEY_NAME VARCHAR(100) NOT NULL , STRING_VAL VARCHAR(250) , DATE_VAL TIMESTAMP DEFAULT NULL , LONG_VAL BIGINT , DOUBLE_VAL DOUBLE PRECISION , IDENTIFYING CHAR(1) NOT NULL , constraint JOB_EXEC_PARAMS_FK foreign key (JOB_EXECUTION_ID) references BATCH_JOB_EXECUTION(JOB_EXECUTION_ID) ) 
+CREATE TABLE BATCH_STEP_EXECUTION ( STEP_EXECUTION_ID BIGINT IDENTITY NOT NULL PRIMARY KEY , VERSION BIGINT NOT NULL, STEP_NAME VARCHAR(100) NOT NULL, JOB_EXECUTION_ID BIGINT NOT NULL, START_TIME TIMESTAMP NOT NULL , END_TIME TIMESTAMP DEFAULT NULL , STATUS VARCHAR(10) , COMMIT_COUNT BIGINT , READ_COUNT BIGINT , FILTER_COUNT BIGINT , WRITE_COUNT BIGINT , READ_SKIP_COUNT BIGINT , WRITE_SKIP_COUNT BIGINT , PROCESS_SKIP_COUNT BIGINT , ROLLBACK_COUNT BIGINT , EXIT_CODE VARCHAR(2500) , EXIT_MESSAGE VARCHAR(2500) , LAST_UPDATED TIMESTAMP, constraint JOB_EXEC_STEP_FK foreign key (JOB_EXECUTION_ID) references BATCH_JOB_EXECUTION(JOB_EXECUTION_ID) ) 
+CREATE TABLE BATCH_STEP_EXECUTION_CONTEXT ( STEP_EXECUTION_ID BIGINT NOT NULL PRIMARY KEY, SHORT_CONTEXT VARCHAR(2500) NOT NULL, SERIALIZED_CONTEXT LONGVARCHAR , constraint STEP_EXEC_CTX_FK foreign key (STEP_EXECUTION_ID) references BATCH_STEP_EXECUTION(STEP_EXECUTION_ID) ) 
+CREATE TABLE BATCH_JOB_EXECUTION_CONTEXT ( JOB_EXECUTION_ID BIGINT NOT NULL PRIMARY KEY, SHORT_CONTEXT VARCHAR(2500) NOT NULL, SERIALIZED_CONTEXT LONGVARCHAR , constraint JOB_EXEC_CTX_FK foreign key (JOB_EXECUTION_ID) references BATCH_JOB_EXECUTION(JOB_EXECUTION_ID) ) 
+CREATE TABLE BATCH_STEP_EXECUTION_SEQ ( ID BIGINT IDENTITY )
+CREATE TABLE BATCH_JOB_EXECUTION_SEQ ( ID BIGINT IDENTITY )
+CREATE TABLE BATCH_JOB_SEQ ( ID BIGINT IDENTITY )
+INSERT INTO BATCH_JOB_SEQ VALUES(0)
+INSERT INTO BATCH_JOB_INSTANCE VALUES(0,0,'importEvents','853d3449e311f40366811cbefb3d93d7')
+INSERT INTO BATCH_JOB_EXECUTION_SEQ VALUES(0)
+INSERT INTO BATCH_JOB_EXECUTION VALUES(0,0,0,'2016-11-25 11:30:21.965000',NULL,NULL,'STARTING','UNKNOWN','','2016-11-25 11:30:21.965000',NULL)
+INSERT INTO BATCH_JOB_EXECUTION_PARAMS VALUES(0,'LONG','run.id','','1970-01-01 01:00:00.000000',1,0.0E0,'Y')
+INSERT INTO BATCH_JOB_EXECUTION_PARAMS VALUES(0,'STRING','-spring.output.ansi.enabled','always','1970-01-01 01:00:00.000000',0,0.0E0,'N')
+INSERT INTO BATCH_JOB_EXECUTION_CONTEXT VALUES(0,'{"map":[""]}',NULL)
+COMMIT
+DELETE FROM BATCH_JOB_EXECUTION WHERE JOB_EXECUTION_ID=0
+INSERT INTO BATCH_JOB_EXECUTION VALUES(0,1,0,'2016-11-25 11:30:21.965000','2016-11-25 11:30:22.012000',NULL,'STARTED','UNKNOWN','','2016-11-25 11:30:22.012000',NULL)
+COMMIT
+INSERT INTO BATCH_STEP_EXECUTION_SEQ VALUES(0)
+INSERT INTO BATCH_STEP_EXECUTION VALUES(0,0,'step',0,'2016-11-25 11:30:22.059000',NULL,'STARTING',0,0,0,0,0,0,0,0,'EXECUTING','','2016-11-25 11:30:22.059000')
+INSERT INTO BATCH_STEP_EXECUTION_CONTEXT VALUES(0,'{"map":[""]}',NULL)
+COMMIT
+DELETE FROM BATCH_STEP_EXECUTION WHERE STEP_EXECUTION_ID=0
+INSERT INTO BATCH_STEP_EXECUTION VALUES(0,1,'step',0,'2016-11-25 11:30:22.090000',NULL,'STARTED',0,0,0,0,0,0,0,0,'EXECUTING','','2016-11-25 11:30:22.090000')
+COMMIT
+DELETE FROM BATCH_STEP_EXECUTION_CONTEXT WHERE STEP_EXECUTION_ID=0
+INSERT INTO BATCH_STEP_EXECUTION_CONTEXT VALUES(0,'{"map":[{"entry":[{"string":["batch.taskletType","org.springframework.batch.core.step.item.ChunkOrientedTasklet"]},{"string":"FlatFileItemReader.read.count","int":0},{"string":["batch.stepType","org.springframework.batch.core.step.tasklet.TaskletStep"]}]}]}',NULL)
+COMMIT
+DELETE FROM BATCH_STEP_EXECUTION_CONTEXT WHERE STEP_EXECUTION_ID=0
+INSERT INTO BATCH_STEP_EXECUTION_CONTEXT VALUES(0,'{"map":[{"entry":[{"string":["batch.taskletType","org.springframework.batch.core.step.item.ChunkOrientedTasklet"]},{"string":"FlatFileItemReader.read.count","int":0},{"string":["batch.stepType","org.springframework.batch.core.step.tasklet.TaskletStep"]}]}]}',NULL)
+COMMIT
+DELETE FROM BATCH_STEP_EXECUTION WHERE STEP_EXECUTION_ID=0
+INSERT INTO BATCH_STEP_EXECUTION VALUES(0,2,'step',0,'2016-11-25 11:30:22.090000','2016-11-25 11:30:22.153000','FAILED',0,0,0,0,0,0,0,1,'FAILED','org.springframework.batch.item.file.FlatFileParseException: Parsing error at line: 1 in resource=[class path resource [import.csv]], input=[description 1, 2016-25-11T15:00:00, 2016-25-11T16:00:00]\u000d\u000a\u0009at org.springframework.batch.item.file.FlatFileItemReader.doRead(FlatFileItemReader.java:183)\u000d\u000a\u0009at org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader.read(AbstractItemCountingItemStreamItemReader.java:88)\u000d\u000a\u0009at org.springframework.batch.core.step.item.SimpleChunkProvider.doRead(SimpleChunkProvider.java:91)\u000d\u000a\u0009at org.springframework.batch.core.step.item.SimpleChunkProvider.read(SimpleChunkProvider.java:157)\u000d\u000a\u0009at org.springframework.batch.core.step.item.SimpleChunkProvider$1.doInIteration(SimpleChunkProvider.java:116)\u000d\u000a\u0009at org.springframework.batch.repeat.support.RepeatTemplate.getNextResult(RepeatTemplate.java:374)\u000d\u000a\u0009at org.springframework.batch.repeat.support.RepeatTemplate.executeInternal(RepeatTemplate.java:215)\u000d\u000a\u0009at org.springframework.batch.repeat.support.RepeatTemplate.iterate(RepeatTemplate.java:144)\u000d\u000a\u0009at org.springframework.batch.core.step.item.SimpleChunkProvider.provide(SimpleChunkProvider.java:110)\u000d\u000a\u0009at org.springframework.batch.core.step.item.ChunkOrientedTasklet.execute(ChunkOrientedTasklet.java:69)\u000d\u000a\u0009at org.springframework.batch.core.step.tasklet.TaskletStep$ChunkTransactionCallback.doInTransaction(TaskletStep.java:406)\u000d\u000a\u0009at org.springframework.batch.core.step.tasklet.TaskletStep$ChunkTransactionCallback.doInTransaction(TaskletStep.java:330)\u000d\u000a\u0009at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:133)\u000d\u000a\u0009at org.springframework.batch.core.step.tasklet.TaskletStep$2.doInChunkContext(TaskletStep.java:271)\u000d\u000a\u0009at org.springframework.batch.core.scope.context.StepContextRepeatCallback.doInIteration(StepContextRepeatCallback.java:81)\u000d\u000a\u0009at org.springframework.batch.repeat.support.RepeatTemplate.getNextResult(RepeatTemplate.java:374)\u000d\u000a\u0009at org.springframework.batch.repeat.support.RepeatTemplate.executeInternal(RepeatTemplate.java:215)\u000d\u000a\u0009at org.springframework.batch.repeat.support.RepeatTemplate.iterate(RepeatTemplate.java:144)\u000d\u000a\u0009at org.springframework.batch.core.step.tasklet.TaskletStep.doExecute(TaskletStep.java:257)\u000d\u000a\u0009at org.springframework.batch.core.step.AbstractStep.execute(AbstractStep.java:200)\u000d\u000a\u0009at org.springframework.batch.core.job.SimpleStepHandler.handleStep(SimpleStepHandler.java:148)\u000d\u000a\u0009at org.springframework.batch.core.job.flow.JobFlowExecutor.executeStep(JobFlowExecutor.java:64)\u000d','2016-11-25 11:30:22.153000')
+COMMIT
+DELETE FROM BATCH_JOB_EXECUTION_CONTEXT WHERE JOB_EXECUTION_ID=0
+INSERT INTO BATCH_JOB_EXECUTION_CONTEXT VALUES(0,'{"map":[""]}',NULL)
+COMMIT
+DELETE FROM BATCH_JOB_EXECUTION WHERE JOB_EXECUTION_ID=0
+INSERT INTO BATCH_JOB_EXECUTION VALUES(0,2,0,'2016-11-25 11:30:21.965000','2016-11-25 11:30:22.012000','2016-11-25 11:30:22.168000','FAILED','FAILED','','2016-11-25 11:30:22.168000',NULL)
+COMMIT
+DISCONNECT
+/*C250*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C249*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C248*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C247*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C246*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C245*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C244*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C243*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C242*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C261*/SET SCHEMA PUBLIC
+INSERT INTO BATCH_JOB_EXECUTION_SEQ VALUES(1)
+DELETE FROM BATCH_JOB_EXECUTION_SEQ WHERE ID=0
+INSERT INTO BATCH_JOB_EXECUTION VALUES(1,0,0,'2016-11-25 11:31:58.617000',NULL,NULL,'STARTING','UNKNOWN','','2016-11-25 11:31:58.617000',NULL)
+INSERT INTO BATCH_JOB_EXECUTION_PARAMS VALUES(1,'LONG','run.id','','1970-01-01 01:00:00.000000',1,0.0E0,'Y')
+INSERT INTO BATCH_JOB_EXECUTION_PARAMS VALUES(1,'STRING','-spring.output.ansi.enabled','always','1970-01-01 01:00:00.000000',0,0.0E0,'N')
+INSERT INTO BATCH_JOB_EXECUTION_CONTEXT VALUES(1,'{"map":[""]}',NULL)
+COMMIT
+DELETE FROM BATCH_JOB_EXECUTION WHERE JOB_EXECUTION_ID=1
+INSERT INTO BATCH_JOB_EXECUTION VALUES(1,1,0,'2016-11-25 11:31:58.617000','2016-11-25 11:31:58.633000',NULL,'STARTED','UNKNOWN','','2016-11-25 11:31:58.633000',NULL)
+COMMIT
+INSERT INTO BATCH_STEP_EXECUTION_SEQ VALUES(1)
+DELETE FROM BATCH_STEP_EXECUTION_SEQ WHERE ID=0
+INSERT INTO BATCH_STEP_EXECUTION VALUES(1,0,'step',1,'2016-11-25 11:31:58.680000',NULL,'STARTING',0,0,0,0,0,0,0,0,'EXECUTING','','2016-11-25 11:31:58.680000')
+INSERT INTO BATCH_STEP_EXECUTION_CONTEXT VALUES(1,'{"map":[{"entry":[{"string":["batch.taskletType","org.springframework.batch.core.step.item.ChunkOrientedTasklet"]},{"string":"FlatFileItemReader.read.count","int":0},{"string":["batch.stepType","org.springframework.batch.core.step.tasklet.TaskletStep"]}]}]}',NULL)
+COMMIT
+DELETE FROM BATCH_STEP_EXECUTION WHERE STEP_EXECUTION_ID=1
+INSERT INTO BATCH_STEP_EXECUTION VALUES(1,1,'step',1,'2016-11-25 11:31:58.680000',NULL,'STARTED',0,0,0,0,0,0,0,0,'EXECUTING','','2016-11-25 11:31:58.680000')
+COMMIT
+DELETE FROM BATCH_STEP_EXECUTION_CONTEXT WHERE STEP_EXECUTION_ID=1
+INSERT INTO BATCH_STEP_EXECUTION_CONTEXT VALUES(1,'{"map":[{"entry":[{"string":["batch.taskletType","org.springframework.batch.core.step.item.ChunkOrientedTasklet"]},{"string":"FlatFileItemReader.read.count","int":0},{"string":["batch.stepType","org.springframework.batch.core.step.tasklet.TaskletStep"]}]}]}',NULL)
+COMMIT
+DELETE FROM BATCH_STEP_EXECUTION_CONTEXT WHERE STEP_EXECUTION_ID=1
+INSERT INTO BATCH_STEP_EXECUTION_CONTEXT VALUES(1,'{"map":[{"entry":[{"string":["batch.taskletType","org.springframework.batch.core.step.item.ChunkOrientedTasklet"]},{"string":"FlatFileItemReader.read.count","int":0},{"string":["batch.stepType","org.springframework.batch.core.step.tasklet.TaskletStep"]}]}]}',NULL)
+COMMIT
+DELETE FROM BATCH_STEP_EXECUTION WHERE STEP_EXECUTION_ID=1
+INSERT INTO BATCH_STEP_EXECUTION VALUES(1,2,'step',1,'2016-11-25 11:31:58.680000','2016-11-25 11:31:58.711000','FAILED',0,6,0,0,0,0,0,1,'FAILED','java.lang.IllegalArgumentException: Property ''targetMethod'' is required\u000d\u000a\u0009at org.springframework.util.MethodInvoker.prepare(MethodInvoker.java:163)\u000d\u000a\u0009at org.springframework.batch.item.data.RepositoryItemWriter.doInvoke(RepositoryItemWriter.java:123)\u000d\u000a\u0009at org.springframework.batch.item.data.RepositoryItemWriter.doWrite(RepositoryItemWriter.java:108)\u000d\u000a\u0009at org.springframework.batch.item.data.RepositoryItemWriter.write(RepositoryItemWriter.java:89)\u000d\u000a\u0009at org.springframework.batch.core.step.item.SimpleChunkProcessor.writeItems(SimpleChunkProcessor.java:175)\u000d\u000a\u0009at org.springframework.batch.core.step.item.SimpleChunkProcessor.doWrite(SimpleChunkProcessor.java:151)\u000d\u000a\u0009at org.springframework.batch.core.step.item.SimpleChunkProcessor.write(SimpleChunkProcessor.java:274)\u000d\u000a\u0009at org.springframework.batch.core.step.item.SimpleChunkProcessor.process(SimpleChunkProcessor.java:199)\u000d\u000a\u0009at org.springframework.batch.core.step.item.ChunkOrientedTasklet.execute(ChunkOrientedTasklet.java:75)\u000d\u000a\u0009at org.springframework.batch.core.step.tasklet.TaskletStep$ChunkTransactionCallback.doInTransaction(TaskletStep.java:406)\u000d\u000a\u0009at org.springframework.batch.core.step.tasklet.TaskletStep$ChunkTransactionCallback.doInTransaction(TaskletStep.java:330)\u000d\u000a\u0009at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:133)\u000d\u000a\u0009at org.springframework.batch.core.step.tasklet.TaskletStep$2.doInChunkContext(TaskletStep.java:271)\u000d\u000a\u0009at org.springframework.batch.core.scope.context.StepContextRepeatCallback.doInIteration(StepContextRepeatCallback.java:81)\u000d\u000a\u0009at org.springframework.batch.repeat.support.RepeatTemplate.getNextResult(RepeatTemplate.java:374)\u000d\u000a\u0009at org.springframework.batch.repeat.support.RepeatTemplate.executeInternal(RepeatTemplate.java:215)\u000d\u000a\u0009at org.springframework.batch.repeat.support.RepeatTemplate.iterate(RepeatTemplate.java:144)\u000d\u000a\u0009at org.springframework.batch.core.step.tasklet.TaskletStep.doExecute(TaskletStep.java:257)\u000d\u000a\u0009at org.springframework.batch.core.step.AbstractStep.execute(AbstractStep.java:200)\u000d\u000a\u0009at org.springframework.batch.core.job.SimpleStepHandler.handleStep(SimpleStepHandler.java:148)\u000d\u000a\u0009at org.springframework.batch.core.job.flow.JobFlowExecutor.executeStep(JobFlowExecutor.java:64)\u000d\u000a\u0009at org.springframework.batch.core.job.flow.support.state.StepState.handle(StepState.java:67)\u000d\u000a\u0009at org.springframework.batch.core.job.flow.support.SimpleFlow.resume(SimpleFlow.java:169)\u000d\u000a\u0009at org.springframework.batch.core.job.flow.support.SimpleFlow.start(SimpleFlow.java:1','2016-11-25 11:31:58.726000')
+COMMIT
+DELETE FROM BATCH_JOB_EXECUTION_CONTEXT WHERE JOB_EXECUTION_ID=1
+INSERT INTO BATCH_JOB_EXECUTION_CONTEXT VALUES(1,'{"map":[""]}',NULL)
+COMMIT
+DELETE FROM BATCH_JOB_EXECUTION WHERE JOB_EXECUTION_ID=1
+INSERT INTO BATCH_JOB_EXECUTION VALUES(1,2,0,'2016-11-25 11:31:58.617000','2016-11-25 11:31:58.633000','2016-11-25 11:31:58.726000','FAILED','FAILED','','2016-11-25 11:31:58.726000',NULL)
+COMMIT
+DISCONNECT
+/*C260*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C259*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C258*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C257*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C256*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C255*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C254*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C253*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C252*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C271*/SET SCHEMA PUBLIC
+INSERT INTO BATCH_JOB_EXECUTION_SEQ VALUES(2)
+DELETE FROM BATCH_JOB_EXECUTION_SEQ WHERE ID=1
+INSERT INTO BATCH_JOB_EXECUTION VALUES(2,0,0,'2016-11-25 11:34:40.414000',NULL,NULL,'STARTING','UNKNOWN','','2016-11-25 11:34:40.414000',NULL)
+INSERT INTO BATCH_JOB_EXECUTION_PARAMS VALUES(2,'LONG','run.id','','1970-01-01 01:00:00.000000',1,0.0E0,'Y')
+INSERT INTO BATCH_JOB_EXECUTION_PARAMS VALUES(2,'STRING','-spring.output.ansi.enabled','always','1970-01-01 01:00:00.000000',0,0.0E0,'N')
+INSERT INTO BATCH_JOB_EXECUTION_CONTEXT VALUES(2,'{"map":[""]}',NULL)
+COMMIT
+DELETE FROM BATCH_JOB_EXECUTION WHERE JOB_EXECUTION_ID=2
+INSERT INTO BATCH_JOB_EXECUTION VALUES(2,1,0,'2016-11-25 11:34:40.414000','2016-11-25 11:34:40.446000',NULL,'STARTED','UNKNOWN','','2016-11-25 11:34:40.446000',NULL)
+COMMIT
+INSERT INTO BATCH_STEP_EXECUTION_SEQ VALUES(2)
+DELETE FROM BATCH_STEP_EXECUTION_SEQ WHERE ID=1
+INSERT INTO BATCH_STEP_EXECUTION VALUES(2,0,'step',2,'2016-11-25 11:34:40.477000',NULL,'STARTING',0,0,0,0,0,0,0,0,'EXECUTING','','2016-11-25 11:34:40.477000')
+INSERT INTO BATCH_STEP_EXECUTION_CONTEXT VALUES(2,'{"map":[{"entry":[{"string":["batch.taskletType","org.springframework.batch.core.step.item.ChunkOrientedTasklet"]},{"string":"FlatFileItemReader.read.count","int":0},{"string":["batch.stepType","org.springframework.batch.core.step.tasklet.TaskletStep"]}]}]}',NULL)
+COMMIT
+DELETE FROM BATCH_STEP_EXECUTION WHERE STEP_EXECUTION_ID=2
+INSERT INTO BATCH_STEP_EXECUTION VALUES(2,1,'step',2,'2016-11-25 11:34:40.477000',NULL,'STARTED',0,0,0,0,0,0,0,0,'EXECUTING','','2016-11-25 11:34:40.492000')
+COMMIT
+DELETE FROM BATCH_STEP_EXECUTION_CONTEXT WHERE STEP_EXECUTION_ID=2
+INSERT INTO BATCH_STEP_EXECUTION_CONTEXT VALUES(2,'{"map":[{"entry":[{"string":["batch.taskletType","org.springframework.batch.core.step.item.ChunkOrientedTasklet"]},{"string":"FlatFileItemReader.read.count","int":0},{"string":["batch.stepType","org.springframework.batch.core.step.tasklet.TaskletStep"]}]}]}',NULL)
+COMMIT
+INSERT INTO EVENT VALUES(3,'aced00057372000d6a6176612e74696d652e536572955d84ba1b2248b20c00007870770805000007e00b19f078','description 1','aced00057372000d6a6176612e74696d652e536572955d84ba1b2248b20c00007870770805000007e00b19ef78')
+INSERT INTO EVENT VALUES(4,'aced00057372000d6a6176612e74696d652e536572955d84ba1b2248b20c00007870770805000007e00b19f078','description 2','aced00057372000d6a6176612e74696d652e536572955d84ba1b2248b20c00007870770805000007e00b19ef78')
+INSERT INTO EVENT VALUES(5,'aced00057372000d6a6176612e74696d652e536572955d84ba1b2248b20c00007870770805000007e00b19f078','description 3','aced00057372000d6a6176612e74696d652e536572955d84ba1b2248b20c00007870770805000007e00b19ef78')
+INSERT INTO EVENT VALUES(6,'aced00057372000d6a6176612e74696d652e536572955d84ba1b2248b20c00007870770805000007e00b19f078','description 4','aced00057372000d6a6176612e74696d652e536572955d84ba1b2248b20c00007870770805000007e00b19ef78')
+INSERT INTO EVENT VALUES(7,'aced00057372000d6a6176612e74696d652e536572955d84ba1b2248b20c00007870770805000007e00b19f078','description 5','aced00057372000d6a6176612e74696d652e536572955d84ba1b2248b20c00007870770805000007e00b19ef78')
+INSERT INTO EVENT VALUES(8,'aced00057372000d6a6176612e74696d652e536572955d84ba1b2248b20c00007870770805000007e00b19f078','description 6','aced00057372000d6a6176612e74696d652e536572955d84ba1b2248b20c00007870770805000007e00b19ef78')
+DELETE FROM BATCH_STEP_EXECUTION_CONTEXT WHERE STEP_EXECUTION_ID=2
+INSERT INTO BATCH_STEP_EXECUTION_CONTEXT VALUES(2,'{"map":[{"entry":[{"string":["batch.taskletType","org.springframework.batch.core.step.item.ChunkOrientedTasklet"]},{"string":"FlatFileItemReader.read.count","int":7},{"string":["batch.stepType","org.springframework.batch.core.step.tasklet.TaskletStep"]}]}]}',NULL)
+DELETE FROM BATCH_STEP_EXECUTION WHERE STEP_EXECUTION_ID=2
+INSERT INTO BATCH_STEP_EXECUTION VALUES(2,2,'step',2,'2016-11-25 11:34:40.477000',NULL,'STARTED',1,6,0,6,0,0,0,0,'EXECUTING','','2016-11-25 11:34:40.570000')
+COMMIT
+DELETE FROM BATCH_STEP_EXECUTION_CONTEXT WHERE STEP_EXECUTION_ID=2
+INSERT INTO BATCH_STEP_EXECUTION_CONTEXT VALUES(2,'{"map":[{"entry":[{"string":["batch.taskletType","org.springframework.batch.core.step.item.ChunkOrientedTasklet"]},{"string":"FlatFileItemReader.read.count","int":7},{"string":["batch.stepType","org.springframework.batch.core.step.tasklet.TaskletStep"]}]}]}',NULL)
+COMMIT
+DELETE FROM BATCH_STEP_EXECUTION WHERE STEP_EXECUTION_ID=2
+INSERT INTO BATCH_STEP_EXECUTION VALUES(2,3,'step',2,'2016-11-25 11:34:40.477000','2016-11-25 11:34:40.586000','COMPLETED',1,6,0,6,0,0,0,0,'COMPLETED','','2016-11-25 11:34:40.586000')
+COMMIT
+DELETE FROM BATCH_JOB_EXECUTION_CONTEXT WHERE JOB_EXECUTION_ID=2
+INSERT INTO BATCH_JOB_EXECUTION_CONTEXT VALUES(2,'{"map":[""]}',NULL)
+COMMIT
+DELETE FROM BATCH_JOB_EXECUTION WHERE JOB_EXECUTION_ID=2
+INSERT INTO BATCH_JOB_EXECUTION VALUES(2,2,0,'2016-11-25 11:34:40.414000','2016-11-25 11:34:40.446000','2016-11-25 11:34:40.586000','COMPLETED','COMPLETED','','2016-11-25 11:34:40.602000',NULL)
+COMMIT
+DISCONNECT
+/*C270*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C269*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C268*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C267*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C266*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C265*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C264*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C263*/SET SCHEMA PUBLIC
+DISCONNECT
+/*C262*/SET SCHEMA PUBLIC
+DISCONNECT

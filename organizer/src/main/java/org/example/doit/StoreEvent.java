@@ -1,13 +1,12 @@
 package org.example.doit;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.File;
-import java.io.InputStream;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.example.organizer.model.Event;
-import org.springframework.core.io.ClassPathResource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -15,12 +14,22 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class StoreEvent implements Store<Event>{
 
-	public ClassPathResource jsonfile;
+	public File jsonfile;
 	private ObjectMapper objectMapper;
 	
-	public public StoreEvent() {
-		jsonfile =  new ClassPathResource("event.json");
-		initObjectMapper();
+	public  StoreEvent() {
+		try {
+			
+			String path = FileUtils.getTempDirectoryPath() +"/events.json";		
+			jsonfile =  new File(path);
+			if (jsonfile.exists()==false){
+				jsonfile.createNewFile();
+			}			
+			initObjectMapper();	
+		} catch (Exception ex){
+			throw new RuntimeException(ex);
+		}
+
 	}
 	
 	private void initObjectMapper(){
@@ -31,25 +40,38 @@ public class StoreEvent implements Store<Event>{
 	
 	
 	@Override
-	public void store(Event[] tab) {
-		try (
-		InputStream input = new ClassPathResource("event.json").getInputStream()) {
-			Event[] event = objectMapper.readValue(input, Event[].class);
+	public void store(Event event) {
+		try {
+
+			Event[] events = findAll();
+			List<Event> lEvents = new ArrayList<Event>(Arrays.asList(events));
+			lEvents.add(event);
 			
-			assertEquals("Dentist", event[0].getDescription());
-			assertEquals(LocalDateTime.of(2016, 1, 1, 15, 0), event[0].getBeginDateTime());
-			assertEquals(LocalDateTime.of(2016, 1, 1, 16, 0), event[0].getEndDateTime());
+			events = lEvents.toArray(new Event[0]);
+			
+			String sEvents  = objectMapper.writeValueAsString(events);
+			
+			FileUtils.writeStringToFile(jsonfile, sEvents);		
+		} catch (Exception ex){
+			throw new RuntimeException(ex);
 		}
-		// TODO Auto-generated method stub
-		
-		
 		
 	}
 
 	@Override
-	public Event[] readAll() {
-		// TODO Auto-generated method stub
-		return null;
+	public Event[] findAll() {
+		Event[] events = new Event[0];
+		try {
+			String s = FileUtils.readFileToString(jsonfile);
+			if (s!=null && s.length()!=0){
+				events = objectMapper.readValue(s, Event[].class);
+			}
+			
+		} catch (Exception ex){
+			throw new RuntimeException(ex);
+		}
+		
+		return events;
 	}
 
 }

@@ -9,11 +9,7 @@ import org.example.organizer.model.Event;
 public class CreateEvent implements Command{
 
 	@Inject
-	private JsonSerializer myserializer; 
-	
-	public CreateEvent(){
-		myserializer = new JacksonJsonSerializer();
-	}
+	private EventDao eventDao;
 	
 	@Override
 	public void execute(String[] args) {
@@ -28,10 +24,9 @@ public class CreateEvent implements Command{
 		Event event  = new Event(desc,  start, end);
 		System.out.println("creation event:"+event);
 		
-		String json = myserializer.serialize(event);
+		eventDao.save(event);
 
-		System.out.println("json:"+json);		
-		
+		System.out.println("event enregistré");
 	}
 	
 	
